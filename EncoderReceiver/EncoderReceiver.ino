@@ -1,17 +1,19 @@
 // Receiver for PCBs
+// Receives message scaled by 100, so do message / 100 to get two decimal points
 
 #include <FlexCAN.h>
 #include <Adafruit_NeoPixel.h>
 #include <TeensyCANBase.h>
 #include <string.h>
 
-#define PIN 7
-#define NUM_LEDS 30
+#define PIN 8
+#define NUM_LEDS 50
 // Limit for Computer: 30 LEDs
 
 int i = 0;
 int toggle = 0;
 int themsg = 0;
+int decimals = 2;
 
 int lowerbound = -40;
 int upperbound = 40;
@@ -79,7 +81,7 @@ int getMSG() {
   return themsg;
 }
 
-void displayNeoPixel(int velocity) {
+void displayNeoPixel(float velocity) {
   if (velocity > upperbound) {
     velocity = upperbound;
   } else if (velocity < lowerbound) {
@@ -113,7 +115,9 @@ void setup(void) {
 }
 void loop(void) {
   CAN_update();
-  displayNeoPixel(getMSG());
+  float unscaledmessage = (float)getMSG() / (float)pow(10, decimals);
+  Serial.println(unscaledmessage);
+  displayNeoPixel(unscaledmessage);
   if (toggle == 1) {
     digitalWrite(13, LOW);
     toggle = 0;

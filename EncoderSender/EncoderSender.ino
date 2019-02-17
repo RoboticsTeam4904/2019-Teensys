@@ -1,4 +1,5 @@
 // Sender for PCBs
+// Send message * 100 to keep two decimal points
 
 #include <Encoder.h>
 #include <FlexCAN.h>
@@ -15,6 +16,8 @@ int toggle = 0;
 int revolution = 1024;
 int interval = 50;
 int seconds = 1000;
+
+int decimals = 2;
 
 float encoderposition() {
   float position = enc.read();
@@ -77,8 +80,9 @@ void setup(void) {
 void loop() {
   CAN_update();
   if((int)(millis() - lasttime) % interval == 0) {
-    Serial.println(encodervelocity());
-    writeLongs(0x612, encodervelocity(), encoderposition());
+    float scaledvelocity = encodervelocity() * pow(10, decimals);
+    Serial.println(scaledvelocity);
+    writeLongs(0x612, scaledvelocity, encoderposition());
   }
   if(millis() - lasttime >= seconds) {
     resetlastposition();
