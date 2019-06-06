@@ -8,7 +8,6 @@
 #define NUM_LEDS 240
 #define PIN 23
 int i = 0;
-//int e = 0;
 int lowerbound = -40;
 int upperbound = 40;
 int toggle = 0;
@@ -135,8 +134,6 @@ void loop(void) {
     writeLongs(0x613, scaledvelocityt, encoderposition(enct));
   }
   for (int e = 0; e < 5; e++) {
-    /*if (rotations % i == 0){
-      int listnumber = i;}*/
       for(i = 0; i < NUM_LEDS; i++) {
         String stre = (colors[e][1]);
     strip.setPixelColor(i, colors[e][0], colors[e][1], colors[e][2]);
@@ -144,10 +141,7 @@ void loop(void) {
     Serial.println(stre);
     delay(10);
   }
-       }
-    //}
-     
-    
+       } 
   if(millis() - lasttime >= seconds) {
     resetlastposition(enc);
     resetlastpositiont(enct);
