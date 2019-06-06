@@ -124,6 +124,7 @@ void setup(void) {
 
 }
 void loop(void) {
+  
   CAN_update();
   if((int)(millis() - lasttime) % interval == 0) {
     float scaledvelocity = encodervelocity(enc) * pow(10, decimals);
@@ -133,6 +134,7 @@ void loop(void) {
     writeLongs(0x612, scaledvelocity, encoderposition(enc));
     writeLongs(0x613, scaledvelocityt, encoderposition(enct));
   }
+  
   for (int e = 0; e < 5; e++) {
       for(i = 0; i < NUM_LEDS; i++) {
         String stre = (colors[e][1]);
@@ -142,6 +144,7 @@ void loop(void) {
     delay(10);
   }
        } 
+       
   if(millis() - lasttime >= seconds) {
     resetlastposition(enc);
     resetlastpositiont(enct);
